@@ -8,23 +8,20 @@ import { auth } from "../../firebase/firebase.config";
 
 const Navbar = () => {
   const { pathname } = useLocation();
-  const { email, isLoading } = useSelector((state) => state.auth);
+  const { email, isLoading, role } = useSelector((state) => state.auth);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    if (!isLoading && email) {
-      navigate("/");
-    }
-  }, [email, isLoading, navigate]);
-
   const handleSignOut = () => {
-    
     signOut(auth)
-    .then(()=>dispatch(logout()))
-    .catch(error=>console.log(error))
-    console.log('out')
-    
+      .then(() => {
+        dispatch(logout());
+        if (!isLoading && email) {
+          navigate("/");
+        }
+      })
+      .catch((error) => console.log(error));
+    console.log("out");
   };
 
   return (
@@ -59,6 +56,27 @@ const Navbar = () => {
             >
               LogOut
             </button>
+          </li>
+        )}
+        {email && role && (
+          <li>
+            <Link
+              className="border border-black px-2 py-1 rounded-full hover:border-primary hover:text-white hover:bg-primary hover:px-4 transition-all "
+              to="/dashboard"
+            >
+              Dashboard
+            </Link>
+          </li>
+        )}
+
+        {email && !role && (
+          <li>
+            <Link
+              className="border border-black px-2 py-1 rounded-full hover:border-primary hover:text-white hover:bg-primary hover:px-4 transition-all "
+              to="/register"
+            >
+              get Started
+            </Link>
           </li>
         )}
       </ul>

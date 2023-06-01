@@ -4,7 +4,7 @@ import { auth } from "../../firebase/firebase.config";
 
 const initialState = {
   email: "",
-  role: "",
+  role: " ",
   isLoading:true,
   isError: false,
   error: "",
@@ -56,13 +56,18 @@ export const authSlice = createSlice({
     },
     setUser:(state,action)=>{
       state.email=action?.payload;
-      state.role='candidate';
+      state.role='';
       state.isLoading=false
       state.error=' '
   
+  },
+  toggleLoading:(state,action)=>{
+  
+    state.isLoading=false
+    
 
+}
 
-  }
 
 
   },
@@ -76,13 +81,13 @@ export const authSlice = createSlice({
 
       .addCase(createUser.fulfilled, (state, action) => {
         state.email = action.payload;
-        state.role = "candidate";
+        state.role = "";
         state.isLoading = false;
         state.error = " ";
       })
       .addCase(createUser.rejected, (state, action) => {
         state.email = "";
-        state.role = " ";
+        state.role = "";
         state.isLoading = false;
         state.isError = true;
         state.error = action.error?.message;
@@ -95,7 +100,7 @@ export const authSlice = createSlice({
 
       .addCase(loginUser.fulfilled, (state, action) => {
         state.email = action.payload;
-        state.role = "candidate";
+        state.role = "";
         state.isLoading = false;
         state.error = " ";
       })
@@ -114,7 +119,7 @@ export const authSlice = createSlice({
 
       .addCase(googleLogin.fulfilled, (state, action) => {
         state.email = action.payload;
-        state.role = "candidate";
+        state.role = "";
         state.isLoading = false;
         state.error = " ";
       })
@@ -128,6 +133,6 @@ export const authSlice = createSlice({
   },
 });
 
- export const {logout,setUser}=authSlice.actions
+ export const {logout,setUser,toggleLoading}=authSlice.actions
 
 export default authSlice.reducer;
